@@ -1,0 +1,5 @@
+# Arduino puts builds into this dir
+build/
+
+# Compiled binaries, if they end up in the project dir
+*.hex
