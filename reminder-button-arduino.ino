@@ -1,15 +1,7 @@
-#include <Snooze.h>
-
-SnoozeDigital digital;
-
 const byte LED_HIGH_PIN = 0;
 const byte LED_LOW_PIN = 1;
 const byte SWITCH_SIGNAL_PIN = 3;
 const byte SWITCH_TEST_PIN = 4;
-
-volatile byte state = HIGH;
-
-SnoozeBlock config(digital);
 
 void setup() {
   /* switch led high */
@@ -25,17 +17,16 @@ void setup() {
   digitalWrite(SWITCH_SIGNAL_PIN, LOW);
 
   /* switch test */
-  digital.pinMode(SWITCH_TEST_PIN, INPUT_PULLUP, FALLING);
+  pinMode(SWITCH_TEST_PIN, INPUT_PULLUP);
 }
 
 void loop() {
-  /* Go into deep sleep. Wake on interrupt. */
-  Snooze.deepSleep(config);
-
-  /* Toggle the LED */
-  state = !state;
-  digitalWrite(LED_HIGH_PIN, state);
-
-  /* Debounce */
-  delay(300);
+  if (digitalRead(SWITCH_TEST_PIN)) {
+    /* still pulled high */
+    digitalWrite(LED_HIGH_PIN, LOW);
+  } else {
+    /* pulled low by switch */
+    digitalWrite(LED_HIGH_PIN, HIGH);
+  }
+  delay(25);
 }
